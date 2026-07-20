@@ -1,0 +1,161 @@
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:'Poppins', sans-serif;
+  background:#0a0a0a;
+  overflow:hidden;
+  height:100vh;
+  color:#fff;
+}
+
+/* ===== floating hearts ===== */
+.floating-hearts{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+.floating-hearts i{position:absolute;opacity:.08;font-size:1.6rem;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:0;}10%{opacity:.08;}90%{opacity:.08;}100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}}
+
+/* ===== chapter dots ===== */
+.chapter-dots{position:fixed;top:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:50;}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);transition:.4s;}
+.dot.active{background:#FF7882;width:26px;border-radius:6px;box-shadow:0 0 12px rgba(255,120,130,.7);}
+.dot.done{background:#FFD700;}
+
+/* ===== stage ===== */
+.stage{position:relative;width:100%;height:100vh;}
+.chapter{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transform:scale(1.05);
+  transition:opacity .7s ease, transform .7s ease;
+  z-index:2;
+}
+.chapter.active{opacity:1; pointer-events:auto; transform:scale(1); z-index:3;}
+
+.chapter-bg{position:absolute;inset:0;z-index:-1;transition:background 1s ease;}
+
+/* THEME: QUEEN - royal maroon/gold, Devsena/Baahubali vibe */
+.theme-queen .chapter-bg{background:radial-gradient(ellipse at 50% 30%, #4a0e14 0%, #1a0305 70%);}
+.theme-queen .chapter-title{font-family:'Cinzel',serif;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,.5);}
+.theme-queen .chapter-crown{color:#FFD700;font-size:2.5rem;text-shadow:0 0 20px rgba(255,215,0,.6);animation:crownGlow 2s ease-in-out infinite;}
+.theme-queen .video-box{border:3px solid #FFD700;box-shadow:0 0 60px rgba(255,215,0,.3);}
+@keyframes crownGlow{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+/* THEME: CHUTKI - Chhota Bheem jungle green/orange */
+.theme-chutki .chapter-bg{background:radial-gradient(ellipse at 50% 30%, #0e3d1f 0%, #041a0c 70%);}
+.theme-chutki .chapter-title{font-family:'Baloo 2',cursive;color:#7CFC7C;text-shadow:0 0 30px rgba(124,252,124,.5);}
+.theme-chutki .chapter-crown{color:#FFA500;font-size:2.5rem;animation:bounce 1.2s ease-in-out infinite;}
+.theme-chutki .video-box{border:3px solid #7CFC7C;box-shadow:0 0 60px rgba(124,252,124,.3);}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* THEME: PRIYA - soft romantic pink/lavender */
+.theme-priya .chapter-bg{background:radial-gradient(ellipse at 50% 30%, #3a1030 0%, #150512 70%);}
+.theme-priya .chapter-title{font-family:'Dancing Script',cursive;font-size:4.5rem;color:#FF9EC8;text-shadow:0 0 30px rgba(255,158,200,.5);}
+.theme-priya .chapter-crown{color:#FF9EC8;font-size:2.2rem;animation:sway 2.5s ease-in-out infinite;}
+.theme-priya .video-box{border:3px solid #FF9EC8;box-shadow:0 0 60px rgba(255,158,200,.3);}
+@keyframes sway{0%,100%{transform:rotate(-8deg);}50%{transform:rotate(8deg);}}
+
+/* THEME: MEMORIES - warm nostalgic amber */
+.theme-memories .chapter-bg{background:radial-gradient(ellipse at 50% 30%, #3d2408 0%, #1a0f02 70%);}
+.theme-memories .chapter-title{font-family:'Dancing Script',cursive;font-size:4.2rem;color:#FFB347;text-shadow:0 0 30px rgba(255,179,71,.5);}
+.theme-memories .chapter-crown{color:#FFB347;font-size:2.2rem;}
+.theme-memories .video-box{border:3px solid #FFB347;box-shadow:0 0 60px rgba(255,179,71,.3);}
+
+/* ===== per-chapter floating fx particles ===== */
+.chapter-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;}
+.fx-item{position:absolute;top:-10%;will-change:transform,opacity;}
+
+/* queen: royal gold sparkles drifting down like falling stardust */
+.theme-queen .fx-item{color:#FFD700;font-size:1.1rem;opacity:0;text-shadow:0 0 10px rgba(255,215,0,.8);animation:fxDriftDown linear infinite;}
+@keyframes fxDriftDown{
+  0%{transform:translateY(-10%) translateX(0) rotate(0deg) scale(.6);opacity:0;}
+  10%{opacity:.9;}
+  90%{opacity:.7;}
+  100%{transform:translateY(120vh) translateX(30px) rotate(360deg) scale(1);opacity:0;}
+}
+
+/* chutki: playful bouncy jungle icons rising with a wiggle */
+.theme-chutki .fx-item{color:#FFA500;font-size:1.3rem;opacity:0;animation:fxBounceUp ease-in-out infinite;}
+@keyframes fxBounceUp{
+  0%{transform:translateY(10%) translateX(0) rotate(-10deg) scale(.7);opacity:0;}
+  10%{opacity:.85;}
+  50%{transform:translateY(-45vh) translateX(20px) rotate(10deg) scale(1.05);}
+  90%{opacity:.6;}
+  100%{transform:translateY(-100vh) translateX(-15px) rotate(-10deg) scale(.9);opacity:0;}
+}
+
+/* priya: soft flower petals swaying down */
+.theme-priya .fx-item{color:#FF9EC8;font-size:1.2rem;opacity:0;animation:fxPetalFall linear infinite;}
+@keyframes fxPetalFall{
+  0%{transform:translateY(-10%) translateX(0) rotate(0deg);opacity:0;}
+  10%{opacity:.85;}
+  50%{transform:translateY(45vh) translateX(-25px) rotate(180deg);}
+  90%{opacity:.6;}
+  100%{transform:translateY(110vh) translateX(15px) rotate(360deg);opacity:0;}
+}
+
+/* memories: gentle warm sparkles like camera flashes */
+.theme-memories .fx-item{color:#FFB347;font-size:1rem;opacity:0;animation:fxTwinkle ease-in-out infinite;}
+@keyframes fxTwinkle{
+  0%,100%{opacity:0;transform:translateY(0) scale(.5);}
+  50%{opacity:.8;transform:translateY(-10px) scale(1.1);}
+}
+
+.chapter-frame{text-align:center;max-width:700px;width:90%;z-index:2;}
+.chapter-title{font-size:3.5rem;font-weight:800;letter-spacing:4px;margin:5px 0 5px;position:relative;background-size:200% auto;}
+.chapter.active .chapter-title{animation:titlePop .6s ease;}
+@keyframes titlePop{0%{opacity:0;transform:translateY(14px) scale(.96);}100%{opacity:1;transform:translateY(0) scale(1);}}
+.chapter-sub{font-family:'Sriracha',cursive;color:rgba(255,255,255,.6);margin-bottom:25px;font-size:1rem;}
+
+.video-box{
+  position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden;
+  background:#111; cursor:pointer;
+}
+.video-box video{width:100%;height:100%;object-fit:cover;display:block;}
+.video-fallback{
+  position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+}
+.video-fallback i{font-size:3rem;}
+.video-fallback span{font-family:'Cinzel',serif;letter-spacing:3px;font-size:1.1rem;opacity:.6;}
+.video-box.no-source .video-fallback{display:flex;}
+.video-box.no-source video{display:none;}
+
+.video-overlay-controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);opacity:0;transition:.3s;}
+.video-box:hover .video-overlay-controls{opacity:1;}
+.play-pause{width:70px;height:70px;border-radius:50%;border:2px solid rgba(255,255,255,.6);background:rgba(0,0,0,.4);color:#fff;font-size:1.6rem;cursor:pointer;}
+.play-pause:hover{background:rgba(255,120,130,.6);}
+
+.chapter-footer{margin-top:18px;}
+.chapter-caption{font-family:'Sriracha',cursive;font-size:.95rem;color:rgba(255,255,255,.5);}
+
+/* ===== bottom bar ===== */
+.bottom-bar{
+  position:fixed; bottom:0; left:0; width:100%; padding:14px 30px 20px; z-index:60;
+  background:linear-gradient(to top, rgba(0,0,0,.85), transparent);
+}
+.progress-track{width:100%;height:5px;background:rgba(255,255,255,.15);border-radius:10px;margin-bottom:12px;cursor:pointer;}
+.progress-fill{width:0%;height:100%;background:linear-gradient(90deg,#FF7882,#FFD700);border-radius:10px;transition:width .1s linear;}
+.controls-row{display:flex;align-items:center;justify-content:space-between;}
+.time-txt{font-size:.85rem;color:rgba(255,255,255,.6);}
+.next-chapter-btn{
+  padding:10px 26px; border-radius:50px; border:none; background:#FF7882; color:#fff;
+  font-family:'Sriracha',cursive; font-size:1rem; cursor:pointer; display:flex; align-items:center; gap:8px;
+  box-shadow:0 5px 20px rgba(255,120,130,.4); transition:.3s;
+}
+.next-chapter-btn:hover{transform:translateY(-2px);background:#ff6a75;}
+.next-chapter-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+
+/* ===== finale overlay ===== */
+.finale-overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.85); backdrop-filter:blur(10px);
+  display:none; align-items:center; justify-content:center; z-index:100;
+}
+.finale-overlay.active{display:flex;animation:fadeIn .6s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.finale-box{text-align:center;}
+.finale-box i{font-size:3rem;color:#FF7882;animation:bounce 1.5s ease-in-out infinite;margin-bottom:15px;}
+.finale-box h2{font-family:'Dancing Script',cursive;font-size:2.5rem;color:#FF7882;margin-bottom:25px;}
+
+@media (max-width:768px){
+  .chapter-title{font-size:2.3rem;}
+  .theme-priya .chapter-title, .theme-memories .chapter-title{font-size:3rem;}
+  .chapter-frame{width:94%;}
+}

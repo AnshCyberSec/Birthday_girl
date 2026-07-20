@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surprise Videos - Indira ❤️</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Poppins:wght@400;600;800&family=Sriracha&family=Cinzel:wght@700;900&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="page2.css">
+</head>
+<body>
+
+<div class="floating-hearts" id="heartsContainer"></div>
+
+<!-- progress dots -->
+<div class="chapter-dots" id="chapterDots">
+  <div class="dot active" data-i="0"></div>
+  <div class="dot" data-i="1"></div>
+  <div class="dot" data-i="2"></div>
+  <div class="dot" data-i="3"></div>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- CHAPTER 0 : QUEEN (Devsena / Baahubali style) -->
+  <section class="chapter theme-queen active" data-chapter="0">
+    <div class="chapter-bg"></div>
+    <div class="chapter-fx" id="fx0"></div>
+    <div class="chapter-frame">
+      <div class="chapter-crown"><i class="fas fa-crown"></i></div>
+      <h2 class="chapter-title">QUEEN</h2>
+      <p class="chapter-sub">Every queen deserves her own entry theme 👑</p>
+      <div class="video-box">
+        <video class="chapter-video" preload="metadata" playsinline poster="">
+          <source src="assets/videos/InShot_20260720_205030539.mp4" type="video/mp4">
+        </video>
+        <div class="video-fallback"><i class="fas fa-crown"></i><span>QUEEN</span></div>
+        <div class="video-overlay-controls">
+          <button class="play-pause"><i class="fas fa-play"></i></button>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <span class="chapter-caption"> Queen 👑</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 1 : CHUTKI (Chhota Bheem style) -->
+  <section class="chapter theme-chutki" data-chapter="1">
+    <div class="chapter-bg"></div>
+    <div class="chapter-fx" id="fx1"></div>
+    <div class="chapter-frame">
+      <div class="chapter-crown"><i class="fas fa-drum"></i></div>
+      <h2 class="chapter-title">CHUTKI</h2>
+      <p class="chapter-sub">Dholakpur ki sabse pyaari Chutki 🥁</p>
+      <div class="video-box">
+        <video class="chapter-video" preload="metadata" playsinline poster="">
+          <source src="assets/videos/InShot_20260720_195346828.mp4" type="video/mp4">
+        </video>
+        <div class="video-fallback"><i class="fas fa-drum"></i><span>CHUTKI</span></div>
+        <div class="video-overlay-controls">
+          <button class="play-pause"><i class="fas fa-play"></i></button>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <span class="chapter-caption">Jaisi Chutki, waisi ho tum — sab dilon ki jaan 💚</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 2 : PRIYA -->
+  <section class="chapter theme-priya" data-chapter="2">
+    <div class="chapter-bg"></div>
+    <div class="chapter-fx" id="fx2"></div>
+    <div class="chapter-frame">
+      <div class="chapter-crown"><i class="fas fa-feather-alt"></i></div>
+      <h2 class="chapter-title">PRIYA</h2>
+      <p class="chapter-sub">Jo sabki priya hai, wo hai — Priya 🌸</p>
+      <div class="video-box">
+        <video class="chapter-video" preload="metadata" playsinline poster="">
+          <source src="assets/videos/Video Project 2.mp4" type="video/mp4">
+        </video>
+        <div class="video-fallback"><i class="fas fa-feather-alt"></i><span>PRIYA</span></div>
+        <div class="video-overlay-controls">
+          <button class="play-pause"><i class="fas fa-play"></i></button>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <span class="chapter-caption">Soft, sweet, aur sabki favourite — hamesha 💗</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 3 : MEMORIES VIDEO (photo montage) -->
+  <section class="chapter theme-memories" data-chapter="3">
+    <div class="chapter-bg"></div>
+    <div class="chapter-fx" id="fx3"></div>
+    <div class="chapter-frame">
+      <div class="chapter-crown"><i class="fas fa-film"></i></div>
+      <h2 class="chapter-title">MEMORIES</h2>
+      <p class="chapter-sub">Har photo ek kahani hai 🎞️</p>
+      <div class="video-box">
+        <video class="chapter-video" preload="metadata" playsinline poster="">
+          <source src="assets/videos/Video Project 4.mp4" type="video/mp4">
+        </video>
+        <div class="video-fallback"><i class="fas fa-images"></i><span>MEMORIES</span></div>
+        <div class="video-overlay-controls">
+          <button class="play-pause"><i class="fas fa-play"></i></button>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <span class="chapter-caption">💕</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- shared bottom bar -->
+<div class="bottom-bar">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="controls-row">
+    <span class="time-txt"><span id="curT">0:00</span> / <span id="durT">0:00</span></span>
+    <button id="nextBtn" class="next-chapter-btn">
+      Next <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+</div>
+
+<!-- end overlay after chapter 4 -->
+<div class="finale-overlay" id="finaleOverlay">
+  <div class="finale-box">
+    <i class="fas fa-heart"></i>
+    <h2>That's not all yet...</h2>
+    <button id="goPage3" class="next-chapter-btn">Continue <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<script src="page2.js"></script>
+</body>
+</html>

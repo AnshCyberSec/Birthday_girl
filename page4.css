@@ -1,0 +1,106 @@
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Poppins',sans-serif; min-height:100vh; overflow-x:hidden;
+  background:#1a0f14; color:#fff; display:flex; align-items:center; justify-content:center;
+  padding:20px;
+}
+
+.party-bg{position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 30% 20%, #3a1522 0%, #150a0e 70%);}
+
+.floating-hearts{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+.floating-hearts i{position:absolute;opacity:.06;font-size:1.6rem;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:0;}10%{opacity:.06;}90%{opacity:.06;}100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}}
+
+/* garland top */
+.garland{position:fixed; top:0; left:0; width:100%; z-index:5; pointer-events:none;}
+.garland-svg{width:100%; height:40px; display:block;}
+.flag{position:absolute; top:14px; width:26px; height:34px; clip-path:polygon(0 0,100% 0,50% 100%);}
+.f1{left:6%; background:#FF7882;} .f2{left:18%; background:#FFD700; top:22px;}
+.f3{left:30%; background:#7CFC7C;} .f4{left:42%; background:#FF9EC8; top:22px;}
+.f5{left:54%; background:#45B7D1;} .f6{left:66%; background:#FFB347; top:22px;}
+.f7{left:78%; background:#A29BFE;} .f8{left:90%; background:#FF7882; top:22px;}
+
+.stage-wrap{position:relative; z-index:2; text-align:center; max-width:560px; width:100%;}
+.hbd-title{font-family:'Dancing Script',cursive; font-size:2.6rem; color:#FF7882; text-shadow:0 0 30px rgba(255,120,130,.4); margin-bottom:6px;}
+.hbd-title span{color:#FFD700;}
+.hbd-sub{font-family:'Sriracha',cursive; color:rgba(255,255,255,.55); margin-bottom:20px; font-size:.95rem; transition:.4s;}
+
+.cake-scene{position:relative; width:100%; max-width:420px; margin:0 auto; user-select:none;}
+.cake-svg{width:100%; height:auto; display:block; filter:drop-shadow(0 20px 40px rgba(0,0,0,.5));}
+
+/* candles group items styled via JS-inserted SVG, flame flicker class added there */
+.flame{transform-origin:center bottom; animation:flicker 0.4s ease-in-out infinite alternate;}
+@keyframes flicker{
+  0%{transform:scaleY(1) scaleX(1) rotate(-2deg);}
+  50%{transform:scaleY(1.1) scaleX(.95) rotate(2deg);}
+  100%{transform:scaleY(.95) scaleX(1.05) rotate(-1deg);}
+}
+.flame.out{animation:none; opacity:0; transition:opacity .3s ease;}
+
+.smoke-layer{position:absolute; inset:0; pointer-events:none; z-index:6;}
+.smoke-puff{
+  position:absolute; width:14px; height:14px; border-radius:50%;
+  background:rgba(255,255,255,.35); filter:blur(3px);
+  animation:smokeRise 1.6s ease-out forwards;
+}
+@keyframes smokeRise{
+  0%{opacity:.6; transform:translateY(0) scale(1);}
+  100%{opacity:0; transform:translateY(-60px) scale(2.2);}
+}
+
+.slice-piece{
+  position:absolute; width:60px; height:70px; left:50%; top:55%;
+  background:linear-gradient(160deg,#ffe4e1,#ff9aa8); border:2px solid #333; border-radius:4px;
+  clip-path:polygon(0 0,100% 0,80% 100%,20% 100%);
+  opacity:0; pointer-events:none; z-index:7;
+}
+.slice-piece.fly{ animation:sliceFly 1s ease-in forwards; }
+@keyframes sliceFly{
+  0%{opacity:1; transform:translate(-50%,0) rotate(0deg) scale(1);}
+  100%{opacity:0; transform:translate(120px,140px) rotate(120deg) scale(.7);}
+}
+
+.reaction-face{position:absolute; top:-70px; left:50%; transform:translateX(-50%) scale(0); opacity:0; transition:.5s cubic-bezier(.34,1.56,.64,1); z-index:8;}
+.reaction-face.show{transform:translateX(-50%) scale(1); opacity:1;}
+.face-emoji{font-size:3.4rem; display:block; animation:faceBounce 1.4s ease-in-out infinite;}
+@keyframes faceBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.face-blush{position:absolute; width:22px; height:14px; border-radius:50%; background:rgba(255,120,130,.55); filter:blur(4px); top:38px;}
+.face-blush.left{left:2px;} .face-blush.right{right:2px;}
+
+.action-row{display:flex; gap:14px; justify-content:center; margin-top:30px; flex-wrap:wrap;}
+.action-btn{
+  padding:13px 30px; border-radius:50px; border:2px solid #333; background:#FF7882; color:#fff;
+  font-family:'Sriracha',cursive; font-size:1rem; cursor:pointer; display:inline-flex; align-items:center; gap:10px;
+  box-shadow:0 5px 0 #333; transition:.2s;
+}
+.action-btn:hover:not(:disabled){transform:translateY(-2px); box-shadow:0 7px 0 #333;}
+.action-btn:active:not(:disabled){transform:translateY(3px); box-shadow:0 2px 0 #333;}
+.action-btn:disabled{opacity:.35; cursor:not-allowed;}
+.continue-btn{margin-top:26px; background:#FFD700; color:#222;}
+
+/* confetti + celebration */
+.confetti-piece{position:fixed; width:9px; height:9px; z-index:50; pointer-events:none; animation:confettiFall linear forwards;}
+@keyframes confettiFall{
+  0%{opacity:1; transform:translateY(-20px) rotate(0deg);}
+  100%{opacity:0; transform:translateY(110vh) rotate(720deg);}
+}
+
+@media (max-width:480px){
+  .hbd-title{font-size:2rem;}
+  .action-btn{padding:11px 22px; font-size:.9rem;}
+}
+
+/* ===== party start gate ===== */
+.party-start-overlay{
+  position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center;
+  background:rgba(10,4,7,.88); backdrop-filter:blur(8px); text-align:center; padding:20px;
+  transition:opacity .6s ease, visibility .6s ease; opacity:1;
+}
+.party-start-overlay.hide{opacity:0; pointer-events:none;}
+.party-start-box{max-width:380px;}
+.party-start-emoji{font-size:3.6rem; animation:startBounce 1.4s ease-in-out infinite;}
+@keyframes startBounce{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-10px) rotate(8deg);}}
+.party-start-box h2{font-family:'Dancing Script',cursive; font-size:2.2rem; color:#FF7882; margin:12px 0 8px;}
+.party-start-box p{font-family:'Poppins',sans-serif; font-size:.95rem; color:rgba(255,255,255,.65); margin-bottom:22px; line-height:1.6;}
+#startPartyBtn{background:#FF7882;}

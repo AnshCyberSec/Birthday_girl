@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Cake - Indira ❤️</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Poppins:wght@400;600&family=Sriracha&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="page4.css">
+</head>
+<body>
+
+<div class="party-bg" id="partyBg"></div>
+<div class="floating-hearts" id="heartsContainer"></div>
+
+<!-- party start gate: shown first, hides once music/party begins -->
+<div class="party-start-overlay" id="partyStartOverlay">
+  <div class="party-start-box">
+    <div class="party-start-emoji">🎉</div>
+    <h2>Ready for the Party?</h2>
+    <p>Tap below to start the music &amp; let the celebration begin</p>
+    <button id="startPartyBtn" class="action-btn"><i class="fas fa-music"></i> Start Music &amp; Party</button>
+  </div>
+</div>
+
+<!-- garlands top -->
+<div class="garland">
+  <svg viewBox="0 0 1000 60" preserveAspectRatio="none" class="garland-svg">
+    <path d="M0,0 Q125,60 250,0 T500,0 T750,0 T1000,0" stroke="#333" stroke-width="2" fill="none"/>
+  </svg>
+  <div class="flag f1"></div><div class="flag f2"></div><div class="flag f3"></div>
+  <div class="flag f4"></div><div class="flag f5"></div><div class="flag f6"></div>
+  <div class="flag f7"></div><div class="flag f8"></div>
+</div>
+
+<div class="stage-wrap">
+  <h1 class="hbd-title">Happy Birthday <span>Indira</span> 🎂</h1>
+  <p class="hbd-sub" id="hintText">Make a wish, then blow the candles 🕯️</p>
+
+  <div class="cake-scene" id="cakeScene">
+
+    <!-- smoke puffs appear after blow -->
+    <div class="smoke-layer" id="smokeLayer"></div>
+
+    <svg class="cake-svg" id="cakeSvg" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="plateGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#fff"/>
+          <stop offset="100%" stop-color="#ddd"/>
+        </linearGradient>
+        <linearGradient id="tier1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#fff6f0"/>
+          <stop offset="100%" stop-color="#ffe4e1"/>
+        </linearGradient>
+        <linearGradient id="tier2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffd7de"/>
+          <stop offset="100%" stop-color="#ff9aa8"/>
+        </linearGradient>
+        <linearGradient id="icingDrip" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#fff"/>
+          <stop offset="100%" stop-color="#ffeef2"/>
+        </linearGradient>
+      </defs>
+
+      <!-- plate -->
+      <ellipse cx="200" cy="392" rx="150" ry="18" fill="url(#plateGrad)" stroke="#333" stroke-width="2"/>
+
+      <!-- base tier -->
+      <rect x="70" y="300" width="260" height="90" rx="14" fill="url(#tier2)" stroke="#333" stroke-width="2.5"/>
+      <ellipse cx="200" cy="300" rx="130" ry="16" fill="#ffb6c1" stroke="#333" stroke-width="2.5"/>
+      <!-- dripping icing base -->
+      <path d="M70,300 q10,25 20,0 q10,28 20,0 q10,25 20,0 q10,28 20,0 q10,25 20,0 q10,28 20,0 q10,25 20,0 q10,28 20,0 q10,25 20,0 q10,28 20,0 q10,25 20,0 L330,300 Z"
+        fill="url(#icingDrip)" stroke="#333" stroke-width="1.5"/>
+
+      <!-- top tier -->
+      <rect x="115" y="215" width="170" height="90" rx="12" fill="url(#tier1)" stroke="#333" stroke-width="2.5"/>
+      <ellipse cx="200" cy="215" rx="85" ry="14" fill="#fff0f3" stroke="#333" stroke-width="2.5"/>
+      <path d="M115,215 q8,20 16,0 q8,22 16,0 q8,20 16,0 q8,22 16,0 q8,20 16,0 q8,22 16,0 q8,20 16,0 q8,22 16,0 L285,215 Z"
+        fill="url(#icingDrip)" stroke="#333" stroke-width="1.2"/>
+
+      <!-- cream swirls decoration -->
+      <g id="sprinkles"></g>
+
+      <!-- candles (positioned via JS group id) -->
+      <g id="candleGroup"></g>
+
+      <!-- cut line (hidden until cut) -->
+      <line id="cutLine" x1="200" y1="215" x2="200" y2="390" stroke="#fff" stroke-width="3" stroke-dasharray="6 6" opacity="0"/>
+    </svg>
+
+    <!-- cut slice piece that flies out -->
+    <div class="slice-piece" id="slicePiece"></div>
+
+    <!-- reaction face -->
+    <div class="reaction-face" id="reactionFace">
+      <div class="face-blush left"></div>
+      <div class="face-blush right"></div>
+      <span class="face-emoji">😊</span>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="action-btn" id="blowBtn"><i class="fas fa-wind"></i> Blow the Candles</button>
+    <button class="action-btn cut-btn" id="cutBtn" disabled><i class="fas fa-utensils"></i> Cut the Cake</button>
+  </div>
+
+  <button class="action-btn continue-btn" id="continueBtn" style="display:none;">
+    Continue <i class="fas fa-arrow-right"></i>
+  </button>
+</div>
+
+<!-- background party music: starts only when the user taps "Start Music & Party" -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="assets/audio/🔥 MERI CHAI KI TAPRI PE ☕  VIRAL DESI ANTHEM 2026  Official Music Video.mp3" type="audio/mpeg">
+</audio>
+
+<script src="page4.js"></script>
+</body>
+</html>
