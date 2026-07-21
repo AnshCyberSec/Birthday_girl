@@ -38,11 +38,11 @@ body{font-family:'Poppins',sans-serif;background:#0e0608;color:#fff;overflow-x:h
 
 .thread-item{
   position:relative; display:flex; align-items:center; margin-bottom:90px;
-  opacity:0; transition:opacity .8s ease, transform .8s ease;
+  opacity:0; transition:opacity .3s ease;
 }
-.thread-item.left{justify-content:flex-start; transform:translateX(-60px);}
-.thread-item.right{justify-content:flex-end; transform:translateX(60px);}
-.thread-item.visible{opacity:1; transform:translateX(0);}
+.thread-item.left{justify-content:flex-start;}
+.thread-item.right{justify-content:flex-end;}
+.thread-item.visible{opacity:1;}
 
 .thread-node{
   position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
@@ -52,20 +52,92 @@ body{font-family:'Poppins',sans-serif;background:#0e0608;color:#fff;overflow-x:h
 }
 .thread-item.visible .thread-node{ transform:translate(-50%,-50%) scale(1.3); background:#FFD700; }
 
+/* shockwave ring that blasts outward from the node when a card reveals */
+.thread-node::after{
+  content:''; position:absolute; inset:-8px; border-radius:50%;
+  border:2px solid rgba(255,215,0,.8); opacity:0; pointer-events:none;
+}
+.thread-item.visible .thread-node::after{ animation:ringPulse .9s ease-out forwards; }
+@keyframes ringPulse{
+  0%{opacity:1; transform:scale(.3);}
+  100%{opacity:0; transform:scale(3.2);}
+}
+
 .thread-card{
-  width:42%; min-width:220px; border-radius:18px; overflow:hidden; position:relative;
+  width:42%; min-width:220px; aspect-ratio:3/4; border-radius:18px; overflow:hidden; position:relative;
   border:2px solid rgba(255,120,130,.2); background:rgba(255,255,255,.03);
   box-shadow:0 15px 40px rgba(0,0,0,.4); cursor:pointer;
-  transition:transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease;
+  transform:scale(.15) rotate(-25deg); opacity:0;
+  transition:box-shadow .4s ease;
 }
-.thread-card:hover{ transform:translateY(-8px) scale(1.02); box-shadow:0 20px 60px rgba(255,120,130,.25); }
-.thread-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;transition:transform .6s ease;}
-.thread-card:hover img{transform:scale(1.08);}
-.thread-card .cap{
-  position:absolute; bottom:0; left:0; width:100%; padding:14px;
+.thread-item.left .thread-card{--rot:-22deg;}
+.thread-item.right .thread-card{--rot:22deg;}
+.thread-item.visible .thread-card{
+  animation:cardBlastIn .85s cubic-bezier(.22,1.6,.4,1) forwards;
+}
+/* explosive pop-in: overshoots big, snaps back, tiny wobble settle */
+@keyframes cardBlastIn{
+  0%{transform:scale(.15) rotate(var(--rot)); opacity:0;}
+  50%{transform:scale(1.18) rotate(calc(var(--rot) * -0.25)); opacity:1;}
+  72%{transform:scale(.92) rotate(calc(var(--rot) * 0.12));}
+  100%{transform:scale(1) rotate(0deg); opacity:1;}
+}
+.thread-card:hover{ transform:translateY(-8px) scale(1.02) !important; box-shadow:0 20px 60px rgba(255,120,130,.25); }
+
+/* ===== the photo, hidden underneath the flower bud until bloomed ===== */
+.photo-reveal{position:absolute; inset:0; z-index:1;}
+.photo-reveal img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;}
+.thread-card:hover .photo-reveal img{transform:scale(1.08);}
+.photo-reveal .cap{
+  position:absolute; bottom:0; left:0; width:100%; padding:14px; z-index:3;
   background:linear-gradient(to top, rgba(0,0,0,.8), transparent);
   font-family:'Sriracha',cursive; font-size:.85rem; color:rgba(255,255,255,.85);
+  opacity:0; transform:translateY(10px); transition:opacity .5s ease .5s, transform .5s ease .5s;
 }
+.thread-card.bloomed .photo-reveal .cap{opacity:1; transform:translateY(0);}
+
+/* ===== flower bud: taps to bloom + blast, revealing the photo ===== */
+.flower-bud{
+  position:absolute; inset:0; z-index:5; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(ellipse at center, #241019 0%, #12070c 80%);
+  transition:opacity .5s ease, transform .55s ease;
+}
+.flower-bud.gone{opacity:0; transform:scale(1.3); pointer-events:none;}
+
+.petal{
+  position:absolute; width:24%; height:36%; left:50%; top:50%;
+  margin-left:-12%; margin-top:-36%;
+  transform-origin:50% 100%;
+  border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
+  transform:rotate(var(--ang)) scale(.22) translateY(6%);
+  opacity:.95;
+  box-shadow:0 0 14px rgba(255,255,255,.15) inset;
+  transition:transform .9s cubic-bezier(.22,1.7,.36,1) var(--pd), opacity .7s ease var(--pd);
+}
+.flower-bud.bloom .petal{
+  transform:rotate(var(--ang)) scale(1.05) translateY(-42%);
+  opacity:0;
+}
+
+.flower-center{
+  position:relative; z-index:2; width:20%; aspect-ratio:1; border-radius:50%;
+  background:radial-gradient(circle, #FFD700, #FF7882);
+  display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.1rem;
+  box-shadow:0 0 25px rgba(255,120,130,.7);
+  animation:centerPulse 1.7s ease-in-out infinite;
+  transition:opacity .5s ease, transform .5s ease;
+}
+.flower-bud.bloom .flower-center{opacity:0; transform:scale(1.6);}
+@keyframes centerPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.14);}}
+
+.tap-hint{
+  position:absolute; bottom:10%; left:50%; transform:translateX(-50%);
+  font-family:'Sriracha',cursive; font-size:.72rem; color:rgba(255,255,255,.7);
+  background:rgba(0,0,0,.35); padding:4px 14px; border-radius:20px; z-index:2;
+  animation:hintPulse 1.6s ease-in-out infinite; transition:opacity .3s ease;
+}
+.flower-bud.bloom .tap-hint{opacity:0;}
+@keyframes hintPulse{0%,100%{opacity:.55;}50%{opacity:1;}}
 
 @media (max-width:768px){
   .thread-svg{left:24px; transform:none;}

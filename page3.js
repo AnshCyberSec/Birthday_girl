@@ -76,22 +76,14 @@ function burstAt(x, y){
 // ============================================================
 const photos = [
   { src: 'assets/images/gallery/photo1.jpeg', caption: 'Grace, without trying. ✨' },
-
-  { src: 'assets/images/gallery/photo2.png', caption: 'Some smiles dont need a reason. 🌸' },
-
+  { src: 'assets/images/gallery/photo2.png', caption: "Some smiles don't need a reason. 🌸" },
   { src: 'assets/images/gallery/photo3.png', caption: 'Confidence looks good on you. 💫' },
-
   { src: 'assets/images/gallery/photo4.png', caption: 'A little sunshine in one frame. ☀️' },
-
   { src: 'assets/images/gallery/photo5.png', caption: 'Simply unforgettable. 🤍' },
-
   { src: 'assets/images/gallery/photo6.png', caption: 'A moment worth keeping. 📸' },
-
   { src: 'assets/images/gallery/photo7.png', caption: 'Effortlessly beautiful. 🌷' },
-
   { src: 'assets/images/gallery/photo8.jpeg', caption: 'Some pictures speak for themselves. ✨' },
-
-  { src: 'assets/images/gallery/photo9.jpg', caption: 'And this one... had to be the last. 🌼' }
+  { src: 'assets/images/gallery/photo9.jpg', caption: "And this one... had to be the last. 🌼" }
 ];
 
 const timeline = document.getElementById('timeline');
@@ -107,6 +99,10 @@ photos.forEach((p, i) => {
   const card = document.createElement('div');
   card.className = 'thread-card';
 
+  // ---- the photo, hidden behind the flower until bloomed ----
+  const photoReveal = document.createElement('div');
+  photoReveal.className = 'photo-reveal';
+
   const img = document.createElement('img');
   img.src = p.src;
   img.loading = 'lazy';
@@ -120,14 +116,89 @@ photos.forEach((p, i) => {
   cap.className = 'cap';
   cap.textContent = p.caption;
 
-  card.appendChild(img);
-  card.appendChild(cap);
+  photoReveal.appendChild(img);
+  photoReveal.appendChild(cap);
+
+  // ---- the flower bud that blooms open on tap ----
+  const bud = document.createElement('div');
+  bud.className = 'flower-bud';
+  const petalColors = [
+    ['#FF9EC8','#FF7882'], ['#FFD86B','#FF9E4F'], ['#B9A6FF','#7C6BFF'],
+    ['#7CFC7C','#3FBF6E'], ['#FF9EC8','#FF7882'], ['#FFD86B','#FF9E4F']
+  ];
+  for(let k = 0; k < 6; k++){
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.setProperty('--ang', (k * 60) + 'deg');
+    petal.style.setProperty('--pd', (k * 0.055) + 's');
+    petal.style.background = `linear-gradient(180deg, ${petalColors[k][0]}, ${petalColors[k][1]})`;
+    bud.appendChild(petal);
+  }
+  const center = document.createElement('div');
+  center.className = 'flower-center';
+  center.innerHTML = '<i class="fas fa-hand-pointer"></i>';
+  bud.appendChild(center);
+  const tapHint = document.createElement('div');
+  tapHint.className = 'tap-hint';
+  tapHint.textContent = 'Tap to bloom';
+  bud.appendChild(tapHint);
+
+  card.appendChild(photoReveal);
+  card.appendChild(bud);
   item.appendChild(node);
   item.appendChild(card);
   timeline.appendChild(item);
 
-  card.addEventListener('click', () => showLightbox(img.src));
+  bud.addEventListener('click', (e) => {
+    e.stopPropagation();
+    bloomFlower(card, bud);
+  });
+
+  card.addEventListener('click', () => {
+    if(!card.classList.contains('bloomed')) return;
+    showLightbox(img.src);
+  });
 });
+
+// ============================================================
+// FLOWER BLOOM REVEAL EFFECT
+// ============================================================
+const bloomSymbols = ['🌸','✨','💥','🎆','💫','🌼'];
+function bigBurst(x, y){
+  const num = isMobile ? 16 : 12;
+  for(let k = 0; k < num; k++){
+    const p = document.createElement('span');
+    p.className = 'burst-particle';
+    p.textContent = bloomSymbols[Math.floor(Math.random() * bloomSymbols.length)];
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+    p.style.fontSize = (Math.random() * .8 + 1) + 'rem';
+    const angle = (Math.PI * 2 * k) / num + Math.random() * 0.4;
+    const dist = 70 + Math.random() * 90;
+    p.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+    p.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+    p.style.setProperty('--br', (Math.random() * 360 - 180) + 'deg');
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1100);
+  }
+}
+
+function bloomFlower(card, bud){
+  if(card.dataset.blooming === 'true') return;
+  card.dataset.blooming = 'true';
+
+  bud.classList.add('bloom');
+
+  setTimeout(() => {
+    const r = card.getBoundingClientRect();
+    bigBurst(r.left + r.width / 2, r.top + r.height / 2);
+    card.classList.add('bloomed');
+  }, 420);
+
+  setTimeout(() => {
+    bud.classList.add('gone');
+  }, 1100);
+}
 
 // ============================================================
 // SCROLL REVEAL
@@ -138,9 +209,16 @@ const observer = new IntersectionObserver((entries) => {
     if(e.isIntersecting && !e.target.classList.contains('visible')){
       e.target.classList.add('visible');
       const node = e.target.querySelector('.thread-node');
+      const card = e.target.querySelector('.thread-card');
       if(node){
         const r = node.getBoundingClientRect();
         burstAt(r.left + r.width/2, r.top + r.height/2);
+      }
+      if(card){
+        setTimeout(() => {
+          const cr = card.getBoundingClientRect();
+          burstAt(cr.left + cr.width/2, cr.top + cr.height/2);
+        }, 350);
       }
     }
   });

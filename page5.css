@@ -74,17 +74,96 @@ body{
 .home-btn{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25);}
 .replay-btn:hover, .home-btn:hover{transform:translateY(-3px);}
 
-/* ===== bye overlay ===== */
-.bye-overlay{
-  position:fixed; inset:0; background:rgba(5,2,6,.96); z-index:300;
-  display:none; align-items:center; justify-content:center; text-align:center;
-  opacity:0; transition:opacity .5s ease;
+/* ============================================================
+   PHOTOBOOTH / BYE OVERLAY
+   ============================================================ */
+.photobooth-overlay{
+  position:fixed; inset:0; z-index:300; display:none; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 50% 30%, #150a12 0%, #050206 70%);
+  opacity:0; transition:opacity .5s ease; overflow:hidden;
 }
-.bye-overlay.active{display:flex; opacity:1;}
-.bye-box .bye-emoji{font-size:4rem; animation:byeWave 1s ease-in-out infinite; transform-origin:70% 70%;}
+.photobooth-overlay.active{display:flex; opacity:1;}
+
+.pb-lights{position:absolute; inset:0; z-index:1; pointer-events:none;}
+.flash-dot{
+  position:absolute; width:14px; height:14px; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.95) 0%, rgba(255,120,130,.4) 60%, transparent 80%);
+  animation:flashPop .4s ease-out forwards;
+}
+@keyframes flashPop{0%{transform:scale(.2); opacity:0;}30%{opacity:1; transform:scale(1.6);}100%{opacity:0; transform:scale(2.4);}}
+
+.pb-content{position:relative; z-index:2; max-width:520px; text-align:center; padding:20px; transition:opacity .4s ease, transform .4s ease;}
+.pb-content.fade-out{opacity:0; transform:translateY(-16px); pointer-events:none;}
+
+.pb-eyebrow{
+  font-family:'Playfair Display',serif; font-style:italic; font-size:1.05rem;
+  color:rgba(255,255,255,.6); margin-bottom:6px;
+}
+.pb-title{
+  font-family:'Dancing Script',cursive; font-weight:700; font-size:2.3rem;
+  color:#FF7882; text-shadow:0 0 30px rgba(255,120,130,.4); margin-bottom:8px;
+}
+.pb-sub{font-family:'Poppins',sans-serif; color:rgba(255,255,255,.75); font-size:1rem; margin-bottom:26px;}
+
+.camera-frame{
+  position:relative; width:220px; height:220px; margin:0 auto 26px;
+  border-radius:20px; background:rgba(255,255,255,.03); border:1px solid rgba(255,120,130,.25);
+  display:flex; align-items:center; justify-content:center; box-shadow:0 20px 50px rgba(0,0,0,.4);
+}
+.camera-frame .corner{position:absolute; width:26px; height:26px; border-color:#FF7882; border-style:solid;}
+.corner.tl{top:10px; left:10px; border-width:3px 0 0 3px; border-radius:6px 0 0 0;}
+.corner.tr{top:10px; right:10px; border-width:3px 3px 0 0; border-radius:0 6px 0 0;}
+.corner.bl{bottom:10px; left:10px; border-width:0 0 3px 3px; border-radius:0 0 0 6px;}
+.corner.br{bottom:10px; right:10px; border-width:0 3px 3px 0; border-radius:0 0 6px 0;}
+.viewfinder{font-size:3.2rem; color:rgba(255,120,130,.55);}
+.rec-dot{
+  position:absolute; top:14px; left:50%; transform:translateX(-50%);
+  display:flex; align-items:center; gap:6px; font-size:.72rem; letter-spacing:1px;
+  color:rgba(255,255,255,.6); font-family:'Poppins',sans-serif;
+}
+.rec-dot span{width:7px; height:7px; border-radius:50%; background:#ff4d5a; animation:recBlink 1.2s infinite;}
+@keyframes recBlink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+.shutter-btn{
+  width:86px; height:86px; border-radius:50%; border:4px solid rgba(255,255,255,.85);
+  background:#FF7882; color:#fff; font-size:1.6rem; cursor:pointer;
+  box-shadow:0 10px 30px rgba(255,120,130,.45); transition:.2s; margin-bottom:10px;
+}
+.shutter-btn:hover{transform:scale(1.06);}
+.shutter-btn:active{transform:scale(.92);}
+.shutter-btn:disabled{opacity:.6; cursor:not-allowed;}
+
+.shot-count{font-family:'Poppins',sans-serif; font-size:.85rem; color:rgba(255,255,255,.55); margin-bottom:18px;}
+
+.polaroid-stack{display:flex; flex-wrap:wrap; justify-content:center; gap:4px; min-height:150px;}
+.polaroid{
+  --r: 0deg;
+  background:#fff; color:#222; width:104px; padding:8px 8px 20px; border-radius:6px;
+  box-shadow:0 12px 26px rgba(0,0,0,.45); display:inline-flex; flex-direction:column; align-items:center;
+  transform:translateY(24px) rotate(var(--r)); opacity:0; animation:polaroidIn .55s ease forwards;
+}
+.polaroid .thumb{
+  width:100%; aspect-ratio:1/1; border-radius:3px; font-size:1.9rem;
+  background:linear-gradient(135deg,#FF7882,#ffd1d6); display:flex; align-items:center; justify-content:center;
+}
+.polaroid span{font-family:'Sriracha',cursive; font-size:.62rem; margin-top:8px; text-align:center; color:#444; line-height:1.3;}
+@keyframes polaroidIn{to{opacity:1; transform:translateY(0) rotate(var(--r));}}
+
+.pb-final{
+  position:relative; z-index:2; text-align:center; display:none; opacity:0;
+}
+.pb-final.active{display:block; animation:letterIn .8s forwards;}
+.pb-final .bye-emoji{font-size:4rem; animation:byeWave 1s ease-in-out infinite; transform-origin:70% 70%;}
 @keyframes byeWave{0%,100%{transform:rotate(0deg);}25%{transform:rotate(20deg);}75%{transform:rotate(-15deg);}}
-.bye-box h2{font-family:'Dancing Script',cursive; font-size:2.6rem; color:#FF7882; margin-top:14px;}
-.bye-box p{font-family:'Poppins',sans-serif; font-weight:400; color:rgba(255,255,255,.65); margin-top:10px; font-size:1.05rem;}
+.pb-final h2{font-family:'Dancing Script',cursive; font-size:2.6rem; color:#FF7882; margin-top:14px;}
+.pb-final p{font-family:'Poppins',sans-serif; font-weight:400; color:rgba(255,255,255,.65); margin-top:10px; font-size:1.05rem;}
+.pb-final-note{font-family:'Playfair Display',serif !important; font-style:italic; color:rgba(255,255,255,.55) !important;}
+
+.flash-overlay{
+  position:fixed; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:320;
+  transition:opacity .08s ease-out;
+}
+.flash-overlay.flash-active{opacity:.9; transition:opacity .04s ease-in;}
 
 @media (max-width:600px){
   body{padding:40px 16px;}
@@ -96,4 +175,6 @@ body{
   .closing-note .soft-line{font-size:.95rem;}
   .signature{font-size:1.6rem;}
   .replay-btn, .home-btn{padding:11px 24px; font-size:.9rem;}
+  .camera-frame{width:180px; height:180px;}
+  .shutter-btn{width:74px; height:74px;}
 }

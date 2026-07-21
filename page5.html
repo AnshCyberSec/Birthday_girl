@@ -46,21 +46,57 @@
 
   <div class="btn-row">
     <button class="replay-btn" id="replayBtn"><i class="fas fa-redo"></i> Dobara Dekho</button>
-    <button class="home-btn" id="byeBtn"><i class="fas fa-hand-sparkles"></i> Bye Bye</button>
+    <button class="home-btn" id="byeBtn"><i class="fas fa-camera"></i> Ek Selfie Ho Jaye?</button>
   </div>
 
 </div>
 
-<div class="bye-overlay" id="byeOverlay">
-  <div class="bye-box">
+<!-- ================= PHOTOBOOTH / BYE OVERLAY ================= -->
+<div class="photobooth-overlay" id="photoboothOverlay">
+  <div class="pb-lights" id="pbLights"></div>
+
+  <div class="pb-content" id="pbContent">
+    <p class="pb-eyebrow">Wait wait wait...</p>
+    <h2 class="pb-title" id="pbTitle">Indira, please smile! 😊</h2>
+    <p class="pb-sub" id="pbSub">Let me click some photos of the birthday girl 📸</p>
+
+    <div class="camera-frame" id="cameraFrame">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+      <div class="rec-dot"><span></span>LIVE</div>
+      <div class="viewfinder"><i class="fas fa-camera-retro"></i></div>
+    </div>
+
+    <button class="shutter-btn" id="shutterBtn" aria-label="Take photo">
+      <i class="fas fa-camera"></i>
+    </button>
+    <p class="shot-count" id="shotCount">0 / 4 clicked</p>
+
+    <div class="polaroid-stack" id="polaroidStack"></div>
+  </div>
+
+  <div class="pb-final" id="pbFinal">
     <div class="bye-emoji">👋</div>
     <h2>Bye Bye Indira!</h2>
-    <p>Milte hain phir se... 💕</p>
+    <p>Saari smiles capture ho gayi... perfect roll 💛</p>
+    <p class="pb-final-note">Milte hain phir se, tab tak apna khayal rakhna. ✨</p>
   </div>
+
+  <div class="flash-overlay" id="flashOverlay"></div>
 </div>
 
 <audio id="bgMusic" autoplay loop preload="auto">
   <source src="assets/audio/Thalapathy Vijay Trisha 💞 Cute Romance  mydreameditz  love.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="cameraSound" preload="auto">
+  <source src="assets/audio/camera-click.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="paparazziSound" preload="auto">
+  <source src="assets/audio/paparazzi.mp3" type="audio/mpeg">
 </audio>
 
 <script src="page5.js"></script>

@@ -75,42 +75,155 @@ animate();
 // REPLAY BUTTON - restarts text animations
 // ============================================================
 document.getElementById('replayBtn').addEventListener('click', function(){
-  document.querySelectorAll('.line, .letter, .replay-btn, .home-btn').forEach(el => {
-    el.style.animation = 'none';
-    void el.offsetWidth; // reflow to restart animation
-    el.style.animation = null;
-  });
   location.reload();
 });
 
 // ============================================================
-// BYE BYE BUTTON - farewell animation, then restart the whole journey
+// PHOTOBOOTH — shutter sound (synthesized, no audio file needed)
 // ============================================================
-document.getElementById('byeBtn').addEventListener('click', function(){
-  const overlay = document.getElementById('byeOverlay');
-  overlay.classList.add('active');
 
-  const symbols = ['❤️','💖','✨','👋'];
-  const burstInterval = setInterval(() => {
-    const el = document.createElement('div');
-    el.textContent = symbols[Math.floor(Math.random()*symbols.length)];
-    el.style.position = 'fixed';
-    el.style.left = Math.random()*100+'vw';
-    el.style.top = '105vh';
-    el.style.fontSize = (Math.random()*1.4+1.2)+'rem';
-    el.style.zIndex = 310;
-    el.style.pointerEvents = 'none';
-    el.style.transition = 'transform 1.6s ease-out, opacity 1.6s ease-out';
-    document.body.appendChild(el);
-    requestAnimationFrame(() => {
-      el.style.transform = `translateY(-120vh) translateX(${Math.random()*80-40}px)`;
-      el.style.opacity = '0';
-    });
-    setTimeout(() => el.remove(), 1700);
-  }, 120);
+function playShutterSound() {
+    const cameraSound = document.getElementById("cameraSound");
 
-  setTimeout(() => {
-    clearInterval(burstInterval);
-    window.location.href = 'index.html';
-  }, 2200);
+    if (cameraSound) {
+        cameraSound.currentTime = 0; // har click pe shuru se play hoga
+        cameraSound.volume = 1.0;    // full volume
+        cameraSound.play().catch(() => {});
+    }
+}
+
+// ============================================================
+// PHOTOBOOTH — paparazzi flash-dot bursts around the screen
+// ============================================================
+function triggerLightBursts(){
+  const container = document.getElementById('pbLights');
+  for(let i = 0; i < 6; i++){
+    setTimeout(() => {
+      const dot = document.createElement('div');
+      dot.className = 'flash-dot';
+      dot.style.left = (Math.random()*90 + 5) + '%';
+      dot.style.top = (Math.random()*80 + 5) + '%';
+      container.appendChild(dot);
+      setTimeout(() => dot.remove(), 420);
+    }, i * 70);
+  }
+}
+
+// ============================================================
+// PHOTOBOOTH — main flow
+// ============================================================
+const captions = [
+  'Okay... this smile was unfair. 🙂',
+  'Now I know why cameras never complain.',
+  'Some smiles deserve extra storage. 💾',
+  'I am keeping this one. 🤍',
+  'This one might be my favourite.',
+  'Not gonna lie... this turned out beautiful.',
+  'The camera had one job... and nailed it.',
+  'I hope you smiled like this in real life too. 🌸'
+];
+
+let shotsTaken = 0;
+const TOTAL_SHOTS = 4;
+let boothOpen = false;
+
+const byeBtn = document.getElementById('byeBtn');
+const photoboothOverlay = document.getElementById('photoboothOverlay');
+const shutterBtn = document.getElementById('shutterBtn');
+const flashOverlay = document.getElementById('flashOverlay');
+const polaroidStack = document.getElementById('polaroidStack');
+const shotCount = document.getElementById('shotCount');
+const pbContent = document.getElementById('pbContent');
+const pbFinal = document.getElementById('pbFinal');
+const pbTitle = document.getElementById('pbTitle');
+const pbSub = document.getElementById('pbSub');
+
+byeBtn.addEventListener('click', function(){
+  if (boothOpen) return;
+  boothOpen = true;
+  photoboothOverlay.classList.add('active');
 });
+
+shutterBtn.addEventListener('click', function(){
+  if (shotsTaken >= TOTAL_SHOTS) return;
+
+  shutterBtn.disabled = true;
+
+  // camera flash across the whole screen
+  flashOverlay.classList.add('flash-active');
+  setTimeout(() => flashOverlay.classList.remove('flash-active'), 90);
+
+  // shutter sound + paparazzi lights
+  playShutterSound();
+  triggerLightBursts();
+
+  // little camera shake for realism
+  const cameraFrame = document.getElementById('cameraFrame');
+  cameraFrame.style.transition = 'transform .08s ease';
+  cameraFrame.style.transform = 'scale(0.97)';
+  setTimeout(() => { cameraFrame.style.transform = 'scale(1)'; }, 100);
+
+  shotsTaken++;
+
+  // add polaroid to stack
+  const polaroid = document.createElement('div');
+  polaroid.className = 'polaroid';
+  const rotation = (Math.random() * 16 - 8).toFixed(1);
+  polaroid.style.setProperty('--r', rotation + 'deg');
+  const emoji = ['📸','💛','✨','🥰'][Math.floor(Math.random()*4)];
+  polaroid.innerHTML = `<div class="thumb">${emoji}</div><span>${captions[Math.floor(Math.random()*captions.length)]}</span>`;
+  polaroidStack.appendChild(polaroid);
+
+  shotCount.textContent = `${shotsTaken} / ${TOTAL_SHOTS} clicked`;
+
+  if (shotsTaken === 1) {
+    pbTitle.textContent = 'Okay... that smile was worth waiting for. 😊';
+    pbSub.textContent = 'One photo is definitely not enough.';
+} else if (shotsTaken === 2) {
+    pbTitle.textContent = 'Hmm... this one is even better. 📸';
+    pbSub.textContent = 'I think the camera likes you too.';
+} else if (shotsTaken === 3) {
+    pbTitle.textContent = 'One last click... ✨';
+    pbSub.textContent = 'Lets save your best birthday smile forever.';
+}
+
+  setTimeout(() => { shutterBtn.disabled = false; }, 500);
+
+  if (shotsTaken >= TOTAL_SHOTS) {
+    shutterBtn.disabled = true;
+    setTimeout(showFinalGoodbye, 1200);
+  }
+});
+
+function showFinalGoodbye(){
+  pbContent.classList.add('fade-out');
+  setTimeout(() => {
+    pbContent.style.display = 'none';
+    pbFinal.classList.add('active');
+
+    // heart & sparkle burst for farewell
+    const symbols = ['❤️','💖','✨','👋'];
+    const burstInterval = setInterval(() => {
+      const el = document.createElement('div');
+      el.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+      el.style.position = 'fixed';
+      el.style.left = Math.random()*100 + 'vw';
+      el.style.top = '105vh';
+      el.style.fontSize = (Math.random()*1.4 + 1.2) + 'rem';
+      el.style.zIndex = 310;
+      el.style.pointerEvents = 'none';
+      el.style.transition = 'transform 1.6s ease-out, opacity 1.6s ease-out';
+      document.body.appendChild(el);
+      requestAnimationFrame(() => {
+        el.style.transform = `translateY(-120vh) translateX(${Math.random()*80-40}px)`;
+        el.style.opacity = '0';
+      });
+      setTimeout(() => el.remove(), 1700);
+    }, 120);
+
+    setTimeout(() => {
+      clearInterval(burstInterval);
+      window.location.href = 'index.html';
+    }, 5000);
+  }, 420);
+}
