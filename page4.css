@@ -8,9 +8,29 @@ body{
 .party-bg{position:fixed;inset:0;z-index:0;
   background:radial-gradient(ellipse at 30% 20%, #3a1522 0%, #150a0e 70%);}
 
+/* ===== ambient bokeh lights ===== */
+.bokeh-layer{position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden;}
+.bokeh-circle{
+  position:absolute; border-radius:50%; filter:blur(18px); opacity:.16;
+  animation:bokeyDrift ease-in-out infinite alternate;
+}
+@keyframes bokeyDrift{
+  0%{transform:translateY(0) translateX(0) scale(1);}
+  50%{transform:translateY(-40px) translateX(20px) scale(1.15);}
+  100%{transform:translateY(10px) translateX(-15px) scale(.95);}
+}
+
 .floating-hearts{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
 .floating-hearts i{position:absolute;opacity:.06;font-size:1.6rem;animation:floatUp linear infinite;}
 @keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:0;}10%{opacity:.06;}90%{opacity:.06;}100%{transform:translateY(-100vh) rotate(360deg);opacity:0;}}
+
+/* full-screen warm wash for the finale moment */
+.finale-wash{
+  position:fixed; inset:0; z-index:2; pointer-events:none; opacity:0;
+  background:radial-gradient(circle at 50% 45%, rgba(255,215,0,.18) 0%, rgba(255,120,130,.08) 40%, transparent 75%);
+  transition:opacity 1.4s ease;
+}
+.finale-wash.show{opacity:1;}
 
 /* garland top */
 .garland{position:fixed; top:0; left:0; width:100%; z-index:5; pointer-events:none;}
@@ -21,13 +41,48 @@ body{
 .f5{left:54%; background:#45B7D1;} .f6{left:66%; background:#FFB347; top:22px;}
 .f7{left:78%; background:#A29BFE;} .f8{left:90%; background:#FF7882; top:22px;}
 
-.stage-wrap{position:relative; z-index:2; text-align:center; max-width:560px; width:100%;}
+.stage-wrap{position:relative; z-index:3; text-align:center; max-width:560px; width:100%;}
 .hbd-title{font-family:'Dancing Script',cursive; font-size:2.6rem; color:#FF7882; text-shadow:0 0 30px rgba(255,120,130,.4); margin-bottom:6px;}
 .hbd-title span{color:#FFD700;}
 .hbd-sub{font-family:'Sriracha',cursive; color:rgba(255,255,255,.55); margin-bottom:20px; font-size:.95rem; transition:.4s;}
 
-.cake-scene{position:relative; width:100%; max-width:420px; margin:0 auto; user-select:none;}
+.cake-scene{
+  position:relative; width:100%; max-width:420px; margin:0 auto; user-select:none;
+  transition:transform .25s ease-out; transform-style:preserve-3d;
+}
 .cake-svg{width:100%; height:auto; display:block; filter:drop-shadow(0 20px 40px rgba(0,0,0,.5));}
+
+/* soft stage-light glow that breathes behind the cake */
+.stage-glow{
+  position:absolute; top:38%; left:50%; width:340px; height:340px; transform:translate(-50%,-50%);
+  background:radial-gradient(circle, rgba(255,120,130,.35) 0%, rgba(255,215,0,.15) 45%, transparent 70%);
+  filter:blur(20px); z-index:-1; animation:glowBreathe 3.2s ease-in-out infinite;
+}
+@keyframes glowBreathe{0%,100%{opacity:.6; transform:translate(-50%,-50%) scale(1);}50%{opacity:1; transform:translate(-50%,-50%) scale(1.08);}}
+
+/* twinkling magic sparkles floating around the cake */
+.sparkle-layer{position:absolute; inset:0; pointer-events:none; z-index:6;}
+.twinkle-star{
+  position:absolute; color:#FFD700; opacity:0; text-shadow:0 0 6px rgba(255,215,0,.8);
+  animation:twinkleFade ease-in-out infinite;
+}
+@keyframes twinkleFade{0%,100%{opacity:0; transform:scale(.6);}50%{opacity:.9; transform:scale(1.15);}}
+
+/* wish bubble */
+.wish-bubble{
+  position:absolute; top:-8px; left:50%; transform:translateX(-50%) translateY(6px) scale(.9);
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,215,0,.4); backdrop-filter:blur(8px);
+  padding:9px 18px; border-radius:20px; font-family:'Sriracha',cursive; font-size:.8rem;
+  color:#FFE9A8; white-space:nowrap; opacity:0; z-index:7; transition:opacity .6s ease, transform .6s ease;
+  box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+.wish-bubble::after{
+  content:''; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%) rotate(45deg);
+  width:10px; height:10px; background:inherit; border-right:1px solid rgba(255,215,0,.4); border-bottom:1px solid rgba(255,215,0,.4);
+}
+.wish-bubble.show{opacity:1; transform:translateX(-50%) translateY(0) scale(1); animation:bubbleBob 2.6s ease-in-out infinite;}
+.wish-bubble.hide{opacity:0; transform:translateX(-50%) translateY(-10px) scale(.9);}
+@keyframes bubbleBob{0%,100%{margin-top:0;}50%{margin-top:-6px;}}
 
 /* candles group items styled via JS-inserted SVG, flame flicker class added there */
 .flame{transform-origin:center bottom; animation:flicker 0.4s ease-in-out infinite alternate;}
@@ -37,6 +92,10 @@ body{
   100%{transform:scaleY(.95) scaleX(1.05) rotate(-1deg);}
 }
 .flame.out{animation:none; opacity:0; transition:opacity .3s ease;}
+
+.candle-glow{animation:glowPulse 1s ease-in-out infinite alternate;}
+@keyframes glowPulse{0%{opacity:.25;}100%{opacity:.5;}}
+.candle-glow.out{opacity:0 !important; transition:opacity .3s ease;}
 
 .smoke-layer{position:absolute; inset:0; pointer-events:none; z-index:6;}
 .smoke-puff{
@@ -79,16 +138,40 @@ body{
 .action-btn:disabled{opacity:.35; cursor:not-allowed;}
 .continue-btn{margin-top:26px; background:#FFD700; color:#222;}
 
+/* cinematic finale banner */
+.finale-banner{
+  margin-top:22px; opacity:0; transform:scale(.85) translateY(10px); pointer-events:none;
+  transition:opacity .8s cubic-bezier(.34,1.56,.64,1), transform .8s cubic-bezier(.34,1.56,.64,1);
+}
+.finale-banner.show{opacity:1; transform:scale(1) translateY(0);}
+.finale-banner h2{
+  font-family:'Dancing Script',cursive; font-size:2.4rem; font-weight:700;
+  background:linear-gradient(90deg,#FFD700,#fff8dc,#FFD700);
+  background-size:200% auto; -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:shimmerText 2.4s linear infinite; text-shadow:0 0 30px rgba(255,215,0,.3);
+}
+@keyframes shimmerText{0%{background-position:0% center;}100%{background-position:200% center;}}
+.finale-banner p{font-family:'Poppins',sans-serif; color:rgba(255,255,255,.7); font-size:.95rem; margin-top:6px;}
+
 /* confetti + celebration */
 .confetti-piece{position:fixed; width:9px; height:9px; z-index:50; pointer-events:none; animation:confettiFall linear forwards;}
 @keyframes confettiFall{
   0%{opacity:1; transform:translateY(-20px) rotate(0deg);}
   100%{opacity:0; transform:translateY(110vh) rotate(720deg);}
 }
+.confetti-ribbon{
+  position:fixed; width:6px; height:22px; z-index:50; pointer-events:none; border-radius:2px;
+  animation:ribbonFall linear forwards;
+}
+@keyframes ribbonFall{
+  0%{opacity:1; transform:translateY(-30px) rotate(0deg) rotateX(0deg);}
+  100%{opacity:0; transform:translateY(112vh) rotate(500deg) rotateX(360deg);}
+}
 
 @media (max-width:480px){
   .hbd-title{font-size:2rem;}
   .action-btn{padding:11px 22px; font-size:.9rem;}
+  .finale-banner h2{font-size:1.9rem;}
 }
 
 /* ===== party start gate ===== */

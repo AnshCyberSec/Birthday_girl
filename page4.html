@@ -7,11 +7,38 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Poppins:wght@400;600&family=Sriracha&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="page4.css">
+<link rel="stylesheet" href="decorations.css">
 </head>
 <body>
 
 <div class="party-bg" id="partyBg"></div>
+<div class="bokeh-layer" id="bokehLayer"></div>
 <div class="floating-hearts" id="heartsContainer"></div>
+<div class="finale-wash" id="finaleWash"></div>
+
+<!-- ===== decorations: balloons, flowers, fairy lights, teddy, gifts ===== -->
+<div class="deco-layer" id="decoLayer"></div>
+<div class="fairy-lights" id="fairyLights"></div>
+
+<div class="teddy-side left">🧸</div>
+<div class="teddy-side right">🧸</div>
+
+<div class="gift-corner left">
+  <div class="gift-box">
+    <div class="box"></div>
+    <div class="lid"></div>
+    <div class="ribbon-v"></div>
+    <div class="bow"></div>
+  </div>
+</div>
+<div class="gift-corner right">
+  <div class="gift-box">
+    <div class="box"></div>
+    <div class="lid"></div>
+    <div class="ribbon-v"></div>
+    <div class="bow"></div>
+  </div>
+</div>
 
 <!-- party start gate: shown first, hides once music/party begins -->
 <div class="party-start-overlay" id="partyStartOverlay">
@@ -39,6 +66,15 @@
 
   <div class="cake-scene" id="cakeScene">
 
+    <!-- soft stage glow behind the cake -->
+    <div class="stage-glow"></div>
+
+    <!-- twinkling magic sparkles around the cake -->
+    <div class="sparkle-layer" id="sparkleLayer"></div>
+
+    <!-- wish bubble -->
+    <div class="wish-bubble" id="wishBubble"><span>Close your eyes &amp; make a wish... ✨</span></div>
+
     <!-- smoke puffs appear after blow -->
     <div class="smoke-layer" id="smokeLayer"></div>
 
@@ -60,6 +96,10 @@
           <stop offset="0%" stop-color="#fff"/>
           <stop offset="100%" stop-color="#ffeef2"/>
         </linearGradient>
+        <radialGradient id="plateShine" cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="rgba(255,255,255,.9)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+        </radialGradient>
       </defs>
 
       <!-- plate -->
@@ -71,15 +111,19 @@
       <!-- dripping icing base -->
       <path d="M70,300 q10,25 20,0 q10,28 20,0 q10,25 20,0 q10,28 20,0 q10,25 20,0 q10,28 20,0 q10,25 20,0 q10,28 20,0 q10,25 20,0 q10,28 20,0 q10,25 20,0 L330,300 Z"
         fill="url(#icingDrip)" stroke="#333" stroke-width="1.5"/>
+      <!-- gloss highlight -->
+      <ellipse cx="130" cy="330" rx="45" ry="22" fill="rgba(255,255,255,.35)"/>
 
       <!-- top tier -->
       <rect x="115" y="215" width="170" height="90" rx="12" fill="url(#tier1)" stroke="#333" stroke-width="2.5"/>
       <ellipse cx="200" cy="215" rx="85" ry="14" fill="#fff0f3" stroke="#333" stroke-width="2.5"/>
       <path d="M115,215 q8,20 16,0 q8,22 16,0 q8,20 16,0 q8,22 16,0 q8,20 16,0 q8,22 16,0 q8,20 16,0 q8,22 16,0 L285,215 Z"
         fill="url(#icingDrip)" stroke="#333" stroke-width="1.2"/>
+      <ellipse cx="160" cy="240" rx="30" ry="15" fill="rgba(255,255,255,.4)"/>
 
-      <!-- cream swirls decoration -->
+      <!-- cream swirls + pearl dragees decoration -->
       <g id="sprinkles"></g>
+      <g id="pearls"></g>
 
       <!-- candles (positioned via JS group id) -->
       <g id="candleGroup"></g>
@@ -104,6 +148,12 @@
     <button class="action-btn cut-btn" id="cutBtn" disabled><i class="fas fa-utensils"></i> Cut the Cake</button>
   </div>
 
+  <!-- cinematic finale banner after the cake is cut -->
+  <div class="finale-banner" id="finaleBanner">
+    <h2>Happy Birthday, Indira 💛</h2>
+    <p>Saari khushiyan tumhari raahon mein aayein ✨</p>
+  </div>
+
   <button class="action-btn continue-btn" id="continueBtn" style="display:none;">
     Continue <i class="fas fa-arrow-right"></i>
   </button>
@@ -115,5 +165,6 @@
 </audio>
 
 <script src="page4.js"></script>
+<script src="decorations.js"></script>
 </body>
 </html>

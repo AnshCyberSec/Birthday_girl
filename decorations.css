@@ -1,0 +1,94 @@
+/* ===== DECORATIONS: gifts, teddy, balloons, fairy lights, flowers ===== */
+
+/* ---- balloons floating up from sides ---- */
+.deco-layer{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden;}
+
+.balloon{
+  position:absolute; bottom:-160px; width:56px; height:70px;
+  background:var(--bcolor,#FF7882);
+  border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+  opacity:0; animation:balloonFloat linear infinite;
+  box-shadow:inset -8px -10px 16px rgba(0,0,0,.15), inset 8px 8px 14px rgba(255,255,255,.25);
+}
+.balloon::before{
+  content:''; position:absolute; left:50%; bottom:-7px; transform:translateX(-50%);
+  width:0; height:0; border-left:5px solid transparent; border-right:5px solid transparent;
+  border-top:9px solid var(--bcolor,#FF7882);
+}
+.balloon::after{
+  content:''; position:absolute; left:50%; top:100%; width:1px; height:90px;
+  background:rgba(255,255,255,.35); transform:translateX(-50%);
+}
+@keyframes balloonFloat{
+  0%{transform:translateY(0) translateX(0) rotate(-4deg); opacity:0;}
+  8%{opacity:.85;}
+  50%{transform:translateY(-55vh) translateX(18px) rotate(4deg);}
+  92%{opacity:.55;}
+  100%{transform:translateY(-118vh) translateX(-14px) rotate(-4deg); opacity:0;}
+}
+
+/* ---- gift boxes bottom corners ---- */
+.gift-corner{
+  position:fixed; bottom:10px; z-index:4; width:110px; pointer-events:none;
+  opacity:0; animation:giftPopIn .9s ease forwards;
+}
+.gift-corner.left{left:10px; animation-delay:.3s;}
+.gift-corner.right{right:10px; animation-delay:.6s;}
+@keyframes giftPopIn{0%{opacity:0; transform:translateY(50px) scale(.8);}100%{opacity:.92; transform:translateY(0) scale(1);}}
+
+.gift-box{position:relative; width:90px; height:78px; margin:0 auto;}
+.gift-box .box{
+  position:absolute; bottom:0; width:90px; height:55px;
+  background:linear-gradient(135deg,#FF9EC8,#FF7882);
+  border:2px solid #333; border-radius:6px;
+}
+.gift-box .lid{
+  position:absolute; bottom:50px; left:-6px; width:102px; height:16px;
+  background:#FFD700; border:2px solid #333; border-radius:4px;
+}
+.gift-box .ribbon-v{
+  position:absolute; bottom:0; left:38px; width:14px; height:70px;
+  background:#FFD700; border:2px solid #333;
+}
+.gift-box .bow{position:absolute; bottom:58px; left:23px; width:44px; height:22px;}
+.gift-box .bow::before,.gift-box .bow::after{
+  content:''; position:absolute; width:20px; height:20px;
+  background:#FFD700; border:2px solid #333; border-radius:50% 50% 50% 0; top:0;
+}
+.gift-box .bow::before{left:0; transform:rotate(-40deg);}
+.gift-box .bow::after{right:0; transform:rotate(40deg) scaleX(-1);}
+
+.gift-corner.right .gift-box .box{background:linear-gradient(135deg,#A29BFE,#45B7D1);}
+
+/* ---- teddy bear both sides ---- */
+.teddy-side{
+  position:fixed; top:52%; transform:translateY(-50%); font-size:4.6rem;
+  opacity:.45; z-index:1; pointer-events:none;
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));
+  animation:teddySway 4s ease-in-out infinite;
+}
+.teddy-side.left{left:-8px;}
+.teddy-side.right{right:-8px; transform:translateY(-50%) scaleX(-1); animation-name:teddySwayR;}
+@keyframes teddySway{0%,100%{transform:translateY(-50%) rotate(-4deg);}50%{transform:translateY(-53%) rotate(4deg);}}
+@keyframes teddySwayR{0%,100%{transform:translateY(-50%) scaleX(-1) rotate(-4deg);}50%{transform:translateY(-53%) scaleX(-1) rotate(4deg);}}
+
+/* ---- twinkly flowers scattered ---- */
+.deco-flower{position:absolute; opacity:0; pointer-events:none; animation:flowerTwinkle ease-in-out infinite;}
+@keyframes flowerTwinkle{0%,100%{opacity:0; transform:scale(.6) rotate(0deg);}50%{opacity:.75; transform:scale(1) rotate(12deg);}}
+
+/* ---- fairy lights across top ---- */
+.fairy-lights{position:fixed; top:0; left:0; width:100%; z-index:4; pointer-events:none; overflow:hidden; height:18px;}
+.fairy-bulb{position:absolute; top:5px; width:8px; height:8px; border-radius:50%; animation:bulbGlow 1.4s ease-in-out infinite;}
+@keyframes bulbGlow{0%,100%{opacity:.35; box-shadow:0 0 4px currentColor;}50%{opacity:1; box-shadow:0 0 12px currentColor;}}
+
+@media (max-width:600px){
+  .teddy-side{font-size:2.6rem; opacity:.3;}
+  .gift-corner{width:64px;}
+  .gift-box{width:52px; height:46px;}
+  .gift-box .box{width:52px; height:32px;}
+  .gift-box .lid{width:60px; height:10px; bottom:30px; left:-4px;}
+  .gift-box .ribbon-v{width:8px; height:42px; left:22px;}
+  .gift-box .bow{width:26px; height:14px; bottom:34px; left:13px;}
+  .gift-box .bow::before,.gift-box .bow::after{width:12px; height:12px;}
+  .balloon{width:38px; height:48px;}
+}

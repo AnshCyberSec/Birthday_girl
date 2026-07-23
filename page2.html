@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Poppins:wght@400;600;800&family=Sriracha&family=Cinzel:wght@700;900&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="page2.css">
+<link rel="stylesheet" href="cinema-intro.css">
 </head>
 <body>
 
@@ -32,9 +33,11 @@
       <p class="chapter-sub">Every queen deserves her own entry theme 👑</p>
       <div class="video-box">
         <video class="chapter-video" preload="metadata" playsinline poster="">
-          <source src="assets/videos/InShot_20260720_205030539.mp4" type="video/mp4">
+          <source src="https://res.cloudinary.com/xv6z5tu4/video/upload/f_auto,q_auto/v1784830850/InShot_20260720_205030539_whtigi.mp4" type="video/mp4">
         </video>
         <div class="video-fallback"><i class="fas fa-crown"></i><span>QUEEN</span></div>
+        <div class="cine-vignette"></div>
+        <div class="cine-grain"></div>
         <div class="video-overlay-controls">
           <button class="play-pause"><i class="fas fa-play"></i></button>
         </div>
@@ -55,9 +58,11 @@
       <p class="chapter-sub">Dholakpur ki sabse pyaari Chutki 🥁</p>
       <div class="video-box">
         <video class="chapter-video" preload="metadata" playsinline poster="">
-          <source src="assets/videos/Inshot 20260720 195346828.mp4" type="video/mp4">
+          <source src="https://res.cloudinary.com/xv6z5tu4/video/upload/f_auto,q_auto/v1784831336/Inshot_20260720_195346828_uf1t3o.mp4" type="video/mp4">
         </video>
         <div class="video-fallback"><i class="fas fa-drum"></i><span>CHUTKI</span></div>
+        <div class="cine-vignette"></div>
+        <div class="cine-grain"></div>
         <div class="video-overlay-controls">
           <button class="play-pause"><i class="fas fa-play"></i></button>
         </div>
@@ -78,9 +83,11 @@
       <p class="chapter-sub">Jo sabki priya hai, wo hai — Priya 🌸</p>
       <div class="video-box">
         <video class="chapter-video" preload="metadata" playsinline poster="">
-          <source src="assets/videos/Video Project 2.mp4" type="video/mp4">
+          <source src="https://res.cloudinary.com/xv6z5tu4/video/upload/f_auto,q_auto/v1784831440/Video_Project_2_wzid4a.mp4" type="video/mp4">
         </video>
         <div class="video-fallback"><i class="fas fa-feather-alt"></i><span>PRIYA</span></div>
+        <div class="cine-vignette"></div>
+        <div class="cine-grain"></div>
         <div class="video-overlay-controls">
           <button class="play-pause"><i class="fas fa-play"></i></button>
         </div>
@@ -101,9 +108,11 @@
       <p class="chapter-sub">Har photo ek kahani hai 🎞️</p>
       <div class="video-box">
         <video class="chapter-video" preload="metadata" playsinline poster="">
-          <source src="assets/videos/Video Project 4.mp4" type="video/mp4">
+          <source src="https://res.cloudinary.com/xv6z5tu4/video/upload/f_auto,q_auto/v1784831459/Video_Project_4_dao56j.mp4" type="video/mp4">
         </video>
         <div class="video-fallback"><i class="fas fa-images"></i><span>MEMORIES</span></div>
+        <div class="cine-vignette"></div>
+        <div class="cine-grain"></div>
         <div class="video-overlay-controls">
           <button class="play-pause"><i class="fas fa-play"></i></button>
         </div>
@@ -134,6 +143,42 @@
     <h2>That's not all yet...</h2>
     <button id="goPage3" class="next-chapter-btn">Continue <i class="fas fa-arrow-right"></i></button>
   </div>
+</div>
+
+<!-- ================= CINEMATIC INTRO (plays before every chapter) ================= -->
+<div class="cinema-intro" id="cinemaIntro">
+  <div class="intro-vignette"></div>
+  <div class="intro-grain"></div>
+
+  <div class="credit-block" id="creditBlock">
+    <p class="credit-pretitle">A FILM</p>
+    <h3 class="credit-directed">Directed &amp; Produced By</h3>
+    <h2 class="credit-name">ANSHUMAN</h2>
+  </div>
+
+  <div class="clapper" id="clapperBoard">
+    <div class="clapper-top"></div>
+    <div class="clapper-bottom">
+      <span>SCENE <b id="clapScene">01</b></span>
+      <span>TAKE <b>1</b></span>
+    </div>
+  </div>
+
+  <div class="now-watching" id="nowWatching">
+    <p class="nw-label">NOW WATCHING</p>
+    <div class="nw-icon" id="nwIcon"><i class="fas fa-crown"></i></div>
+    <h2 class="nw-title" id="nwTitle">QUEEN</h2>
+  </div>
+
+  <div class="countdown-wrap" id="countdownWrap">
+    <svg class="countdown-ring" viewBox="0 0 120 120">
+      <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+      <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="52"></circle>
+    </svg>
+    <span class="countdown-num" id="countdownNum">3</span>
+  </div>
+
+  <p class="skip-hint">Tap anywhere to skip ⏭</p>
 </div>
 
 <script src="page2.js"></script>

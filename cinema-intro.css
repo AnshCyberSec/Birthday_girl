@@ -1,0 +1,147 @@
+/* ============================================================
+   CINEMA-INTRO.CSS
+   Additive stylesheet — does NOT touch your existing page2.css.
+   Adds: the movie-style intro (credits / clapperboard / countdown)
+   and cinematic framing (grain + vignette + black bars) on videos.
+   ============================================================ */
+
+/* ===== full-screen cinematic intro overlay ===== */
+.cinema-intro{
+  position:fixed; inset:0; z-index:500; background:#000;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  opacity:0; visibility:hidden; cursor:pointer;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.cinema-intro.active{opacity:1; visibility:visible;}
+
+.intro-vignette{
+  position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.85) 100%);
+}
+.intro-grain{
+  position:absolute; inset:0; pointer-events:none; opacity:.08; mix-blend-mode:overlay;
+  background-image:
+    radial-gradient(rgba(255,255,255,.7) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,.5) 1px, transparent 1px);
+  background-size:3px 3px, 5px 5px;
+  background-position:0 0, 1px 2px;
+  animation:grainShift .3s steps(4) infinite;
+}
+@keyframes grainShift{
+  0%{background-position:0 0, 1px 2px;}
+  25%{background-position:2px 1px, 0 3px;}
+  50%{background-position:1px 3px, 2px 0;}
+  75%{background-position:3px 2px, 1px 1px;}
+  100%{background-position:0 0, 1px 2px;}
+}
+
+.skip-hint{
+  position:absolute; bottom:26px; left:50%; transform:translateX(-50%);
+  font-family:'Poppins',sans-serif; font-size:.72rem; letter-spacing:1px;
+  color:rgba(255,255,255,.35); opacity:0; transition:opacity 1s ease .8s;
+}
+.cinema-intro.active .skip-hint{opacity:1;}
+
+/* ===== "A Film Directed & Produced By ANSHUMAN" ===== */
+.credit-block{
+  position:relative; z-index:2; opacity:0; transform:translateY(14px) scale(.96);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.credit-block.show{opacity:1; transform:translateY(0) scale(1);}
+.credit-pretitle{
+  font-family:'Cinzel',serif; font-size:.85rem; letter-spacing:6px;
+  color:rgba(255,255,255,.5); margin-bottom:10px;
+}
+.credit-directed{
+  font-family:'Cinzel',serif; font-weight:700; font-size:1.05rem; letter-spacing:3px;
+  color:rgba(255,255,255,.7); margin-bottom:12px;
+}
+.credit-name{
+  font-family:'Cinzel',serif; font-weight:900; font-size:2.6rem; letter-spacing:6px;
+  background:linear-gradient(90deg,#FFD700,#fff8dc,#FFD700); background-size:200% auto;
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:shimmerText 2.4s linear infinite; text-shadow:0 0 40px rgba(255,215,0,.3);
+}
+@keyframes shimmerText{0%{background-position:0% center;}100%{background-position:200% center;}}
+
+/* ===== clapperboard ===== */
+.clapper{
+  position:relative; z-index:2; width:220px; opacity:0; transform:scale(.85);
+  transition:opacity .5s ease, transform .5s ease;
+}
+.clapper.show{opacity:1; transform:scale(1);}
+.clapper-top{
+  height:34px;
+  background:repeating-linear-gradient(45deg,#111 0 14px,#fff 14px 28px);
+  border:2px solid #000; border-radius:4px 4px 0 0;
+  transform-origin:left center; transform:rotate(-20deg);
+  transition:transform .18s cubic-bezier(.3,1.6,.5,1);
+}
+.clapper.clap-close .clapper-top{transform:rotate(0deg);}
+.clapper-bottom{
+  background:#151515; border:2px solid #000; border-top:none; border-radius:0 0 6px 6px;
+  padding:14px 12px; display:flex; justify-content:space-between;
+  font-family:'Poppins',sans-serif; font-size:.75rem; color:#FFD700; letter-spacing:1px;
+}
+.clapper-bottom b{color:#fff;}
+
+/* ===== "Now Watching: CHAPTER" ===== */
+.now-watching{
+  position:relative; z-index:2; opacity:0; transform:translateY(10px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+.now-watching.show{opacity:1; transform:translateY(0);}
+.nw-label{
+  font-family:'Poppins',sans-serif; letter-spacing:4px; font-size:.75rem;
+  color:rgba(255,255,255,.5); margin-bottom:10px;
+}
+.nw-icon{font-size:2.4rem; color:#FF7882; margin-bottom:8px; text-shadow:0 0 20px rgba(255,120,130,.6);}
+.nw-title{font-family:'Cinzel',serif; font-weight:900; font-size:2.4rem; letter-spacing:5px; color:#fff;}
+
+/* ===== 3-2-1 countdown ring ===== */
+.countdown-wrap{
+  position:relative; z-index:2; width:120px; height:120px; opacity:0; transform:scale(.8);
+  transition:opacity .4s ease, transform .4s ease;
+}
+.countdown-wrap.show{opacity:1; transform:scale(1);}
+.countdown-ring{width:100%; height:100%; transform:rotate(-90deg);}
+.ring-bg{fill:none; stroke:rgba(255,255,255,.12); stroke-width:6;}
+.ring-fg{
+  fill:none; stroke:#FFD700; stroke-width:6; stroke-linecap:round;
+  stroke-dasharray:326.7; stroke-dashoffset:0;
+}
+.countdown-wrap.show .ring-fg{animation:ringDeplete 1s linear infinite;}
+@keyframes ringDeplete{from{stroke-dashoffset:0;}to{stroke-dashoffset:326.7;}}
+.countdown-num{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-family:'Cinzel',serif; font-weight:900; font-size:2.6rem; color:#fff;
+}
+
+/* ===== cinematic framing on the actual video player ===== */
+.cine-vignette{
+  position:absolute; inset:0; z-index:6; pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%);
+}
+.cine-grain{
+  position:absolute; inset:0; z-index:7; pointer-events:none; opacity:.06; mix-blend-mode:overlay;
+  background-image:
+    radial-gradient(rgba(255,255,255,.7) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,.5) 1px, transparent 1px);
+  background-size:3px 3px, 5px 5px;
+  background-position:0 0, 1px 2px;
+  animation:grainShift .3s steps(4) infinite;
+}
+.video-box::before, .video-box::after{
+  content:''; position:absolute; left:0; width:100%; height:10px; background:#000;
+  z-index:8; pointer-events:none;
+}
+.video-box::before{top:0;}
+.video-box::after{bottom:0;}
+
+@media (max-width:480px){
+  .credit-name{font-size:1.9rem;}
+  .nw-title{font-size:1.8rem;}
+  .clapper{width:170px;}
+  .countdown-wrap{width:96px; height:96px;}
+  .countdown-num{font-size:2rem;}
+}
